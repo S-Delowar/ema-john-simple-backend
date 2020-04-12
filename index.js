@@ -33,12 +33,46 @@ app.get('/products', (req, res) =>{
       });
 });
 
-app.get('/product/:id', (req, res) =>{
-    const id = req.params.id;    
+app.get('/product/:key', (req, res) =>{
+    const key = req.params.key;    
     
-    const name = users[id];
-    res.send({id, name});
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("onlineStore").collection("products");
+        collection.find({key}).toArray((err, documents)=>{
+            if(err){
+                console.log(err)
+                res.status(500).send({message:err});
+            }
+            else{
+                res.send(documents[0]);
+            }
+        });
+        client.close();
+      });
 });
+
+
+app.post('/getProductsByKey', (req, res) =>{
+    const key = req.params.key;    
+    const productKeys = req.body;
+    console.log(productKeys);
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("onlineStore").collection("products");
+        collection.find({key: {$in: productKeys} }).toArray((err, documents)=>{
+            if(err){
+                console.log(err)
+                res.status(500).send({message:err});
+            }
+            else{
+                res.send(documents);
+            }
+        });
+        client.close();
+      });
+});
+
 //delete
 //update
 // post
@@ -47,7 +81,7 @@ app.post('/addProduct', (req, res) => {
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
         const collection = client.db("onlineStore").collection("products");
-        collection.insertOne(product, (err, result)=>{
+        collection.insert(product, (err, result)=>{
             if(err){
                 console.log(err)
                 res.status(500).send({message:err});
@@ -56,9 +90,33 @@ app.post('/addProduct', (req, res) => {
                 res.send(result.ops[0]);
             }
         });
-        client.close();
+        //client.close();
       });
 });
 
+app.post('/placeOrder', (req, res) => {
+    const oderDetails= req.body;
+    oderDetails.orderTime = new Date()
+    console.log(oderDetails);
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("onlineStore").collection("orders");
+        collection.insertOne(oderDetails, (err, result)=>{
+            if(err){
+                console.log(err)
+                res.status(500).send({message:err});
+            }
+            else{
+                res.send(result.ops[0]);
+            }
+        });
+        //client.close();
+      });
+});
+
+
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`index.js listening at http://localhost:${port}`))
+
+
+//mongodb+srv://dbUser:<password>@cluster0-smctl.mongodb.net/test?retryWrites=true&w=majority
