@@ -30,7 +30,7 @@
 
 
     <script>
-        fetch('http://localhost:3000/products')
+        fetch('https://cryptic-atoll-39128.herokuapp.com/products')
             .then(res => res.json())
             .then(product => {
                 console.log(product);
@@ -61,7 +61,7 @@
 
 
             //post
-            fetch('http://localhost:3000/addProduct', {
+            fetch('https://cryptic-atoll-39128.herokuapp.com/addProduct', {
                 method: 'POST',
                 body: JSON.stringify(product),
                 headers: {
