@@ -140,3 +140,6 @@ app.listen(port, () => console.log(`index.js listening at http://localhost:${por
 
 
 //mongodb+srv://dbUser:<password>@cluster0-smctl.mongodb.net/test?retryWrites=true&w=majority
+
+//https://ema-john-practice.web.app/
+//https://dashboard.heroku.com/apps/cryptic-atoll-39128/deploy/heroku-git
