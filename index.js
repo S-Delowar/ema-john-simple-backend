@@ -9,12 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-
 const uri = process.env.DB_PATH;
-
-let client = new MongoClient(uri, { useNewUrlParser: true });
-const users = ["Asad", 'Moin', 'Sabed', 'Susmita', 'Sohana', 'Sabana'];
-
 
 app.get('/products', (req, res) =>{
     client = new MongoClient(uri, { useNewUrlParser: true });
@@ -33,7 +28,6 @@ app.get('/products', (req, res) =>{
       });
 });
 
-
 app.get('/orders', (req, res) =>{
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
@@ -50,8 +44,6 @@ app.get('/orders', (req, res) =>{
         client.close();
       });
 });
-
-
 
 app.get('/product/:key', (req, res) =>{
     const key = req.params.key;    
@@ -71,7 +63,6 @@ app.get('/product/:key', (req, res) =>{
         client.close();
       });
 });
-
 
 app.post('/getProductsByKey', (req, res) =>{
     const key = req.params.key;    
@@ -93,9 +84,6 @@ app.post('/getProductsByKey', (req, res) =>{
       });
 });
 
-//delete
-//update
-// post
 app.post('/addProduct', (req, res) => {
     const product = req.body;
     client = new MongoClient(uri, { useNewUrlParser: true });
