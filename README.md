@@ -5,10 +5,7 @@ This site is for selling foods online. Anybody can order foods for breakfast or 
 * Node.js
 * Express.js
 * MongoDB 
-* Nodemon
-* body-parser
-* dotenv
-* cors
+* Heroku for deployment
 
 [Live Website](https://ema-john-practice.web.app/)
 
